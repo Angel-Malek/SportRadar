@@ -4,27 +4,27 @@ import java.util.List;
 
 public class EventList {
 
-    private List<Event> events;
+    private List<Event> event;
 
     public EventList() {
     }
 
     public EventList(List<Event> events) {
-        this.events = events;
+        this.event = events;
     }
 
-    public List<Event> getEvents() {
-        return events;
+    public List<Event> getEvent() {
+        return event;
     }
 
     public void setEvents(List<Event> events) {
-        this.events = events;
+        this.event = events;
     }
 
     @Override
     public String toString() {
         return "EventList{" +
-                "events=" + events +
+                "events=" + event +
                 '}';
     }
 }
