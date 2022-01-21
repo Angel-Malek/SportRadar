@@ -1,5 +1,6 @@
 package com.example.sportradar;
 
+import com.example.sportradar.mapper.ProbableResultMapper;
 import com.example.sportradar.model.Event;
 import com.example.sportradar.model.EventList;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @SpringBootApplication
 public class SportRadarApplication implements CommandLineRunner {
@@ -23,14 +25,22 @@ public class SportRadarApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        EventList eventList = objectMapper.readValue(new File("/Users/angel/IdeaProjects/SportRadar/src/main/resources/data.json"), EventList.class);
+        File file = new File(
+                getClass().getClassLoader().getResource("data.json").getFile()
+        );
+        EventList eventList = objectMapper.readValue(file, EventList.class);
 
-//        System.out.println(event.getCompetition_name());
-
-        System.out.println(eventList.getEvent().get(0).getProbability_away_team_winner());
+        mostProbableEvents(eventList);
 
 
-        ArrayList<Double> chanseContainer = new ArrayList<Double>();
+    }
+
+
+
+
+    private void mostProbableEvents(EventList eventList) {
+
+        List<Double> chanseContainer = new ArrayList<Double>();
 
         for (int i = 0; i < eventList.getEvent().size(); i++) {
             chanseContainer.add(eventList.getEvent().get(i).getProbability_home_team_winner());
@@ -39,25 +49,27 @@ public class SportRadarApplication implements CommandLineRunner {
         }
 
         Collections.sort(chanseContainer);
-
         Collections.reverse(chanseContainer);
-
-        System.out.println(eventList.getEvent().get(0).getProbability_draw());
-
-
-        System.out.println(chanseContainer);
-
+        List<Event> mostProbableEvents =  new ArrayList<>();
         for (int i = 0; i < eventList.getEvent().size() - 1; i++) {
             for (int j = 0; j < 10; j++) {
                 if (eventList.getEvent().get(i).getProbability_away_team_winner() == chanseContainer.get(j)
                         || eventList.getEvent().get(i).getProbability_draw() == chanseContainer.get(j)
                         || eventList.getEvent().get(i).getProbability_home_team_winner() == chanseContainer.get(j)) {
-                    System.out.println(eventList.getEvent().get(i).getSport_event_id());
+//                    System.out.println(eventList.getEvent().get(i).toString());
+                    mostProbableEvents.add(eventList.getEvent().get(i));
+
                 }
             }
         }
-
+        ProbableResultMapper mapper = new ProbableResultMapper();
+        mapper.createProbableResultDto(mostProbableEvents);
 
     }
+
+
+
+
 }
+
 
