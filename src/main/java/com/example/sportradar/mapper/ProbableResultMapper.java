@@ -15,7 +15,7 @@ public class ProbableResultMapper {
     private final static String DRAW = "DRAW";
     private final static String AWAY_TEAM_WIN  = "AWAY_TEAM_WIN";
 
-    public void createProbableResultDto(List<Event> eventList) {
+    public static void createProbableResultDto(List<Event> eventList) {
 
         List<ProbableResultDto> probableResultDtoList = new ArrayList<>();
 
@@ -43,7 +43,7 @@ public class ProbableResultMapper {
         probableResultDtoList.forEach(System.out::println);
     }
 
-    private String getCompetitorName(List<Competitor> competitors, String place) {
+    private static String getCompetitorName(List<Competitor> competitors, String place) {
         String result = "";
         for (Competitor competitor : competitors) {
             if (competitor.getQualifier().equals(place)) {
@@ -55,7 +55,7 @@ public class ProbableResultMapper {
         return result;
     }
 
-    private String getCompetitorCountry(List<Competitor> competitors, String place) {
+    private static String getCompetitorCountry(List<Competitor> competitors, String place) {
         String result = "";
         for (Competitor competitor : competitors) {
             if (competitor.getQualifier().equals(place)) {
@@ -66,12 +66,12 @@ public class ProbableResultMapper {
         return result;
     }
 
-    private Double getHighestProbableResultValue(Event event) {
+    private static Double getHighestProbableResultValue(Event event) {
         Double result = Math.max(Math.max(event.getProbability_home_team_winner(), event.getProbability_draw()), event.getProbability_away_team_winner());
         return result;
     }
 
-    private String getHighestProbableResultName(Event event) {
+    private static String getHighestProbableResultName(Event event) {
         String resultName  =  "";
         Double result = Math.max(Math.max(event.getProbability_home_team_winner(), event.getProbability_draw()), event.getProbability_away_team_winner());
         if (result ==  event.getProbability_away_team_winner()){

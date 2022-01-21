@@ -25,6 +25,7 @@ public class SportRadarApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
 
+
         File file = new File(
                 getClass().getClassLoader().getResource("data.json").getFile()
         );
@@ -33,9 +34,11 @@ public class SportRadarApplication implements CommandLineRunner {
         mostProbableEvents(eventList);
 
 
+
     }
 
     private void mostProbableEvents(EventList eventList) {
+        long expectedMatches  = 10;
 
         List<Double> chanseContainer = new ArrayList<Double>();
 
@@ -49,19 +52,17 @@ public class SportRadarApplication implements CommandLineRunner {
         Collections.reverse(chanseContainer);
         List<Event> mostProbableEvents =  new ArrayList<>();
         for (int i = 0; i < eventList.getEvent().size() - 1; i++) {
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < expectedMatches; j++) {
                 if (eventList.getEvent().get(i).getProbability_away_team_winner() == chanseContainer.get(j)
                         || eventList.getEvent().get(i).getProbability_draw() == chanseContainer.get(j)
                         || eventList.getEvent().get(i).getProbability_home_team_winner() == chanseContainer.get(j)) {
-//                    System.out.println(eventList.getEvent().get(i).toString());
                     mostProbableEvents.add(eventList.getEvent().get(i));
-
                 }
             }
         }
-        ProbableResultMapper mapper = new ProbableResultMapper();
-        mapper.createProbableResultDto(mostProbableEvents);
-
+//        ProbableResultMapper mapper = new ProbableResultMapper();
+//        mapper.createProbableResultDto(mostProbableEvents);
+         ProbableResultMapper.createProbableResultDto(mostProbableEvents);
     }
 
 
