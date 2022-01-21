@@ -35,9 +35,6 @@ public class SportRadarApplication implements CommandLineRunner {
 
     }
 
-
-
-
     private void mostProbableEvents(EventList eventList) {
 
         List<Double> chanseContainer = new ArrayList<Double>();
