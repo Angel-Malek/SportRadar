@@ -11,11 +11,11 @@ public class ProbableResultMapper {
 
     private final static String QUALIFIER_HOME = "home";
     private final static String QUALIFIER_AWAY = "away";
-    private final static String HOME_TEAM_WIN  = "HOME_TEAM_WIN";
+    private final static String HOME_TEAM_WIN = "HOME_TEAM_WIN";
     private final static String DRAW = "DRAW";
-    private final static String AWAY_TEAM_WIN  = "AWAY_TEAM_WIN";
+    private final static String AWAY_TEAM_WIN = "AWAY_TEAM_WIN";
 
-    public static void createProbableResultDto(List<Event> eventList) {
+    public static List<ProbableResultDto> createProbableResultDto(List<Event> eventList) {
 
         List<ProbableResultDto> probableResultDtoList = new ArrayList<>();
 
@@ -36,11 +36,8 @@ public class ProbableResultMapper {
             probableResultDto.setHighestProbableResultValue(getHighestProbableResultValue(event));
             probableResultDto.setHighestProbableResultName(getHighestProbableResultName(event));
 
-//            probableResultDto.setHighestProbableResultName();
-//            private String highestProbableResultName;
-//            private Double highestProbableResultValue;
         }
-        probableResultDtoList.forEach(System.out::println);
+      return  probableResultDtoList;
     }
 
     private static String getCompetitorName(List<Competitor> competitors, String place) {
@@ -67,18 +64,21 @@ public class ProbableResultMapper {
     }
 
     private static Double getHighestProbableResultValue(Event event) {
-        Double result = Math.max(Math.max(event.getProbability_home_team_winner(), event.getProbability_draw()), event.getProbability_away_team_winner());
+        Double result = Math.max(
+                Math.max(event.getProbability_home_team_winner(), event.getProbability_draw()),
+                event.getProbability_away_team_winner());
         return result;
     }
 
     private static String getHighestProbableResultName(Event event) {
-        String resultName  =  "";
-        Double result = Math.max(Math.max(event.getProbability_home_team_winner(), event.getProbability_draw()), event.getProbability_away_team_winner());
-        if (result ==  event.getProbability_away_team_winner()){
+        String resultName = "";
+        Double resultScore = getHighestProbableResultValue(event);
+
+        if (resultScore.equals(event.getProbability_away_team_winner())) {
             resultName = AWAY_TEAM_WIN;
-        } else if  (result  == event.getProbability_draw()){
+        } else if (resultScore.equals(event.getProbability_draw())) {
             resultName = DRAW;
-        } else {
+        } else if (resultScore.equals(event.getProbability_home_team_winner())) {
             resultName = HOME_TEAM_WIN;
         }
         return resultName;
