@@ -37,7 +37,7 @@ public class ProbableResultMapper {
             probableResultDto.setHighestProbableResultName(getHighestProbableResultName(event));
 
         }
-      return  probableResultDtoList;
+        return probableResultDtoList;
     }
 
     private static String getCompetitorName(List<Competitor> competitors, String place) {

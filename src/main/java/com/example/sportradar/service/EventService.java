@@ -32,31 +32,31 @@ public class EventService {
     public void prepareEventData() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         File file = new File(
-                getClass().getClassLoader().getResource("data.json").getFile()
+                Objects.requireNonNull(getClass().getClassLoader().getResource("data.json")).getFile()
         );
         eventList = objectMapper.readValue(file, EventList.class);
         //  mostProbableEvents(eventListStore);
     }
 
     public List<ProbableResultDto> mostProbableEvents(long matchesCount) {
-        List<Double> chanseContainer = new ArrayList<Double>();
+        List<Double> chanceContainer = new ArrayList<>();
 
         for (int i = 0; i < eventList.getEvent().size(); i++) {
-            chanseContainer.add(eventList.getEvent().get(i).getProbability_home_team_winner());
-            chanseContainer.add(eventList.getEvent().get(i).getProbability_draw());
-            chanseContainer.add(eventList.getEvent().get(i).getProbability_away_team_winner());
+            chanceContainer.add(eventList.getEvent().get(i).getProbability_home_team_winner());
+            chanceContainer.add(eventList.getEvent().get(i).getProbability_draw());
+            chanceContainer.add(eventList.getEvent().get(i).getProbability_away_team_winner());
         }
 
-        Collections.sort(chanseContainer);
-        Collections.reverse(chanseContainer);
+        Collections.sort(chanceContainer);
+        Collections.reverse(chanceContainer);
 
         List<Event> mostProbableEvents = new ArrayList<>();
 
         for (int i = 0; i < eventList.getEvent().size(); i++) {
             for (int j = 0; j < matchesCount; j++) {
-                if (eventList.getEvent().get(i).getProbability_away_team_winner().equals(chanseContainer.get(j))
-                        || eventList.getEvent().get(i).getProbability_draw().equals(chanseContainer.get(j))
-                        || eventList.getEvent().get(i).getProbability_home_team_winner().equals(chanseContainer.get(j))) {
+                if (eventList.getEvent().get(i).getProbability_away_team_winner().equals(chanceContainer.get(j))
+                        || eventList.getEvent().get(i).getProbability_draw().equals(chanceContainer.get(j))
+                        || eventList.getEvent().get(i).getProbability_home_team_winner().equals(chanceContainer.get(j))) {
                     mostProbableEvents.add(eventList.getEvent().get(i));
                 }
             }

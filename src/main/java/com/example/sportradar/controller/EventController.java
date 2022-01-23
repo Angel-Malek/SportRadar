@@ -12,7 +12,8 @@ import java.util.Set;
 @RestController
 @RequestMapping(value = "/event")
 public class EventController {
-    private EventService eventService;
+
+    private final EventService eventService;
 
     public EventController(EventService eventService) {
         this.eventService = eventService;
@@ -27,6 +28,8 @@ public class EventController {
     public List<ProbableResultDto> getMostProbableEvents(@PathVariable("matchesCount") long matchesCount) {
         if (matchesCount > eventService.eventList.getEvent().size()) {
             throw new RuntimeException("To big value");
+        }else if (matchesCount <= 0){
+            throw new RuntimeException("value should be greater than a zero");
         }
         return eventService.mostProbableEvents(matchesCount);
     }
